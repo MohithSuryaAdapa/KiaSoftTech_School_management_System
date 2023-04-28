@@ -1,0 +1,207 @@
+create table public.class
+(
+ class_id serial primary key,
+ name varchar(50),
+ no_of_std integer,
+ no_of_chairs integer,
+ no_of_tables integer,
+ section_ varchar(40)
+);
+
+create table public.parent
+(
+ pr_id serial primary key,
+ name_ varchar(40),
+email varchar(40),
+cnic varchar(40),
+cell_no varchar(40),
+occupation varchar(40),
+office_no varchar(40),
+monthly_income numeric(18,3),
+status varchar(40)
+);
+
+create table public.student
+(
+ std_id serial primary key,
+ name_ varchar(40),
+ f_id integer,--foreign key
+ class_id integer, --//foreign key
+ address varchar(100),
+ dob date,
+ admission_date date,
+status varchar(40),
+cell_no varchar(40),
+
+constraint fk_parent_id foreign key(f_id) references public.parent (pr_id),
+constraint fk_class_id foreign key (class_id) references public.class(class_id)
+);
+
+create table public.student_attendance
+(
+ att_id serial primary key,
+ std_id integer ,-- //foreign key,
+ cls_id integer ,--//foreign key
+ status varchar(40),
+ date_ date,
+constraint fk_class_id foreign key (cls_id) references public.class(class_id),
+
+constraint fk_student_id foreign key (std_id) references public.student(std_id)
+
+);
+
+create table public.fee
+(
+ fee_id serial primary key,
+ student_id integer ,--//foreign key
+ class_id integer ,--//foreign key
+ Month_ varchar(40),
+ last_month_chrg numeric(18,3),
+ total_fee numeric(18,3),
+ discount numeric(18,3),
+sub_total numeric(18,3),
+paid numeric(18,3),
+remaning numeric(18,3),
+issue_date date,
+constraint fk_class_id foreign key (class_id) references public.class(class_id),
+constraint fk_student_id foreign key (student_id) references public.student(std_id)
+);
+
+create table public.teacher
+(
+ t_id serial primary key,
+emp_num varchar(40),
+ name_ varchar(40),
+f_name varchar(40),
+subject varchar(40),
+dob date,
+join_date date,
+qualification varchar(40),
+cell_no varchar(40),
+cnic varchar(40),
+descripition varchar(200)
+);
+
+create table public.subject
+(
+ sub_id serial primary key,
+name_ varchar(40),
+class_id integer,--//foreign key
+author varchar(40),
+descripition varchar(40),
+
+constraint fk_class_id foreign key (class_id) references public.class(class_id)
+);
+
+create table public.paper
+(
+ p_id serial primary key,
+ cls_id integer, --//foreign key
+ t_id integer ,--//foreign key
+ sub_id integer ,--//foreign key
+ date_ date,
+ descripition varchar(200),
+ pic bytea,
+ constraint fk_class_id foreign key (cls_id) references public.class(class_id),
+constraint fk_teacher_id foreign key(t_id) references public.teacher(t_id),
+ constraint fk_subject_id foreign key(sub_id) references public.subject(sub_id )
+);
+
+create table public.test
+(
+ t_id serial primary key,
+ type_ varchar(40),
+ cls_id integer ,--//foreign key
+ sub_id integer , --//foreign key
+date_ date,
+ descripition varchar(200),
+constraint fk_subject_id foreign key(sub_id) references public.subject(sub_id ),
+ constraint fk_class_id foreign key (cls_id) references public.class(class_id)
+
+);
+
+create table public.assets
+(
+ as_id serial primary key,
+ type_ varchar(40),
+ name_ varchar(40),
+ date_ date,
+ amount numeric(18,3),
+ descripition varchar(200)
+);
+
+create table public.expense
+(
+ ex_id serial primary key,
+ ex_type varchar(40),
+ name_ varchar(40),
+ date_ date,
+ amount numeric(18,3),
+ descripition varchar(200)
+);
+
+create table public.salary
+(
+ sal_id serial primary key,
+ t_id integer ,-- foreign key,
+ month_ varchar(40),
+issue_date date,
+basic_sal numeric(18,3),
+deduction numeric(18,3),
+allowances numeric(18,3),
+advance_sal numeric(18,3),
+total_amount numeric(18,3),
+ constraint fk_teacher_id foreign key(t_id) references public.teacher(t_id)
+);
+
+create table public.staff_attendance
+(
+ atdnce_id serial primary key,
+ t_id integer ,--//foreign key,
+ status varchar(40),
+date_ date,
+ constraint fk_teacher_id foreign key(t_id) references public.teacher(t_id)
+);
+
+
+create table public.exam
+(
+ ex_id serial primary key,
+ type_ varchar(40),
+ date_ date,
+ fee numeric(18,3),
+descripition varchar(200)
+);
+
+create table public.notices
+(
+ notices_id serial primary key,
+ date_ date,
+ descripition varchar(200)
+);
+
+
+create table public.role
+(
+ role_id serial primary key,
+ date_ date,
+name_ varchar(40),
+descripition varchar(200)
+);
+ create table public.user
+(
+ user_id serial primary key,
+ role_id integer , --foreign key
+ first_name varchar(40),
+last_name varchar(40),
+user_name varchar(40),
+email varchar(40),
+password_ varchar(40),
+ constraint fk_role_id foreign key(role_id) references public.role(role_id)
+
+);
+
+
+
+
+
